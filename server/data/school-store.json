@@ -1,0 +1,88 @@
+{
+  "students": [
+    {
+      "id": "student-ana-clara",
+      "publicCode": "ALU-0001",
+      "fullName": "Ana Clara Souza",
+      "familyNames": [
+        "Marcos Souza",
+        "Patricia Souza"
+      ],
+      "address": "Rua das Flores, 123 - Centro - Sao Paulo/SP",
+      "birthDate": "2012-03-12",
+      "notes": "Frequencia boa e participa bem em sala.",
+      "enrollmentEncrypted": "0FfCio86/RiTe32fpYRzWgrPPAR/vm+y+SQGrm5menBirTzu",
+      "enrollmentLast4": "0019",
+      "records": [
+        {
+          "id": "0611f8b1-eb94-4475-b8d5-82105a27e704",
+          "kind": "nota",
+          "subject": "Matematica",
+          "title": "Prova 1",
+          "note": "Dominio dos conteudos basicos.",
+          "term": "1 bimestre",
+          "score": 9.2,
+          "maxScore": 10,
+          "createdAt": "2026-06-05T18:57:13.810Z"
+        },
+        {
+          "id": "08d69ff9-11c2-4d14-80b5-8660c32e3450",
+          "kind": "trabalho",
+          "subject": "Ciencias",
+          "title": "Maquete do sistema solar",
+          "note": "Entrega no prazo e com capricho.",
+          "term": "1 bimestre",
+          "score": 8.7,
+          "maxScore": 10,
+          "createdAt": "2026-06-05T18:57:13.810Z"
+        }
+      ],
+      "createdAt": "2026-06-05T18:57:13.810Z",
+      "updatedAt": "2026-06-05T18:57:13.810Z"
+    },
+    {
+      "id": "student-joao-pedro",
+      "publicCode": "ALU-0002",
+      "fullName": "Joao Pedro Lima",
+      "familyNames": [
+        "Fernanda Lima",
+        "Carlos Lima"
+      ],
+      "address": "Av. Brasil, 900 - Jardim America - Rio de Janeiro/RJ",
+      "birthDate": "2011-09-04",
+      "notes": "Precisa reforcar leitura e producao textual.",
+      "enrollmentEncrypted": "5h57zlzXG85hnMEnMwnJ1TFfr954YP6W11ZYyzbM0XdNKn0/",
+      "enrollmentLast4": "0027",
+      "records": [
+        {
+          "id": "a38ff992-ede3-4abc-b7d6-7ffb2dab1c9a",
+          "kind": "nota",
+          "subject": "Portugues",
+          "title": "Redacao",
+          "note": "Texto coerente, com pequenas correcoes gramaticais.",
+          "term": "1 bimestre",
+          "score": 7.8,
+          "maxScore": 10,
+          "createdAt": "2026-06-05T18:57:13.811Z"
+        },
+        {
+          "id": "e87226b5-2e57-43d3-8182-c200871d6836",
+          "kind": "observacao",
+          "subject": "Comportamento",
+          "title": "Acompanhamento de sala",
+          "note": "Mantem postura respeitosa e colaborativa.",
+          "term": "1 bimestre",
+          "score": 0,
+          "maxScore": 10,
+          "createdAt": "2026-06-05T18:57:13.811Z"
+        }
+      ],
+      "createdAt": "2026-06-05T18:57:13.811Z",
+      "updatedAt": "2026-06-05T18:57:13.811Z"
+    }
+  ],
+  "meta": {
+    "version": 1,
+    "nextSequence": 3
+  }
+}

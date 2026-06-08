@@ -1,0 +1,136 @@
+{
+  "clients": [
+    {
+      "id": "client-acme",
+      "name": "ACME Eventos",
+      "phone": "(11) 98888-0001",
+      "email": "contato@acmeeventos.com.br",
+      "company": "ACME Live",
+      "notes": "Cliente recorrente para ativações e feiras.",
+      "createdAt": "2026-06-01T10:00:00.000Z"
+    },
+    {
+      "id": "client-brisa",
+      "name": "Brisa Producoes",
+      "phone": "(21) 97777-0002",
+      "email": "producao@brisa.com.br",
+      "company": "Brisa Comunicacao",
+      "notes": "Foco em eventos corporativos e lancamentos.",
+      "createdAt": "2026-06-02T11:00:00.000Z"
+    }
+  ],
+  "events": [
+    {
+      "id": "event-aurora",
+      "name": "Lancamento Aurora",
+      "city": "Sao Paulo",
+      "date": "2026-06-20",
+      "time": "19:00",
+      "clientId": "client-acme",
+      "clientName": "ACME Eventos",
+      "status": "confirmado",
+      "createdAt": "2026-06-03T09:00:00.000Z"
+    },
+    {
+      "id": "event-summit",
+      "name": "Corporate Summit 2026",
+      "city": "Rio de Janeiro",
+      "date": "2026-06-28",
+      "time": "08:30",
+      "clientId": "client-brisa",
+      "clientName": "Brisa Producoes",
+      "status": "planejado",
+      "createdAt": "2026-06-03T10:00:00.000Z"
+    }
+  ],
+  "products": [
+    {
+      "id": "product-led",
+      "name": "Painel LED 3x2",
+      "description": "Painel de alta definicao para palco e ambientacao.",
+      "baseValue": 4500,
+      "availability": "disponivel",
+      "createdAt": "2026-06-01T12:00:00.000Z"
+    },
+    {
+      "id": "product-som",
+      "name": "Kit Som Premium",
+      "description": "Sistema de som com caixas, mixer e microfones sem fio.",
+      "baseValue": 3200,
+      "availability": "disponivel",
+      "createdAt": "2026-06-01T12:10:00.000Z"
+    },
+    {
+      "id": "product-iluminacao",
+      "name": "Kit Iluminacao Cenario",
+      "description": "Iluminacao cenica para entrada, palco e destaque.",
+      "baseValue": 2200,
+      "availability": "reservado",
+      "createdAt": "2026-06-01T12:20:00.000Z"
+    }
+  ],
+  "proposals": [
+    {
+      "id": "proposal-1",
+      "clientId": "client-acme",
+      "clientName": "ACME Eventos",
+      "eventId": "event-aurora",
+      "eventName": "Lancamento Aurora",
+      "eventCity": "Sao Paulo",
+      "eventDate": "2026-06-20",
+      "eventTime": "19:00",
+      "status": "proposta_enviada",
+      "productIds": [
+        "product-led",
+        "product-som"
+      ],
+      "products": [
+        {
+          "id": "product-led",
+          "name": "Painel LED 3x2",
+          "baseValue": 4500
+        },
+        {
+          "id": "product-som",
+          "name": "Kit Som Premium",
+          "baseValue": 3200
+        }
+      ],
+      "estimatedValue": 7700,
+      "summary": "Proposta para ACME Eventos no Lancamento Aurora, em Sao Paulo, com Painel LED 3x2 e Kit Som Premium. Valor estimado de R$ 7.700,00.",
+      "createdAt": "2026-06-03T14:00:00.000Z",
+      "updatedAt": "2026-06-03T14:00:00.000Z"
+    },
+    {
+      "id": "proposal-2",
+      "clientId": "client-brisa",
+      "clientName": "Brisa Producoes",
+      "eventId": "event-summit",
+      "eventName": "Corporate Summit 2026",
+      "eventCity": "Rio de Janeiro",
+      "eventDate": "2026-06-28",
+      "eventTime": "08:30",
+      "status": "aprovado",
+      "productIds": [
+        "product-iluminacao",
+        "product-led"
+      ],
+      "products": [
+        {
+          "id": "product-iluminacao",
+          "name": "Kit Iluminacao Cenario",
+          "baseValue": 2200
+        },
+        {
+          "id": "product-led",
+          "name": "Painel LED 3x2",
+          "baseValue": 4500
+        }
+      ],
+      "estimatedValue": 6700,
+      "summary": "Proposta aprovada para Brisa Producoes no Corporate Summit 2026, com Kit Iluminacao Cenario e Painel LED 3x2. Valor estimado de R$ 6.700,00.",
+      "createdAt": "2026-06-04T09:00:00.000Z",
+      "updatedAt": "2026-06-04T09:30:00.000Z"
+    }
+  ]
+}

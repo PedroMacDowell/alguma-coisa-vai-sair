@@ -1,0 +1,110 @@
+﻿<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Sistema Escolar</title>
+    <meta name="description" content="Preview estático do sistema escolar com cadastro de alunos, boletim e lançamento de notas." />
+    <style>
+      :root {
+        color-scheme: dark;
+        --bg: #07111f;
+        --panel: rgba(11, 19, 34, 0.9);
+        --line: rgba(255, 255, 255, 0.12);
+        --text: #f4f8ff;
+        --muted: #9caec8;
+        --accent: #69d5ff;
+        --accent-2: #77f2c2;
+        --shadow: 0 24px 70px rgba(0, 0, 0, 0.34);
+      }
+      * { box-sizing: border-box; }
+      body {
+        margin: 0;
+        min-height: 100vh;
+        font-family: 'Segoe UI', sans-serif;
+        color: var(--text);
+        background: linear-gradient(135deg, #050a13 0%, #08111e 60%, #07111f 100%);
+      }
+      .shell {
+        max-width: 1080px;
+        margin: 0 auto;
+        padding: 32px;
+      }
+      .hero {
+        border: 1px solid var(--line);
+        background: var(--panel);
+        border-radius: 28px;
+        padding: 32px;
+        box-shadow: var(--shadow);
+      }
+      .eyebrow {
+        margin: 0 0 18px;
+        color: var(--accent-2);
+        text-transform: uppercase;
+        letter-spacing: 0.24em;
+        font-size: 0.8rem;
+      }
+      h1 {
+        margin: 0 0 18px;
+        font-size: clamp(2.2rem, 4vw, 3.8rem);
+        line-height: 1.02;
+      }
+      p {
+        margin: 0 0 20px;
+        color: var(--muted);
+        line-height: 1.7;
+      }
+      .panel {
+        margin-top: 24px;
+        border: 1px solid var(--line);
+        background: rgba(255,255,255,0.04);
+        border-radius: 24px;
+        padding: 24px;
+      }
+      ul {
+        margin: 0;
+        padding-left: 1.2rem;
+        color: var(--muted);
+      }
+      li {
+        margin-bottom: 0.75rem;
+      }
+      .link {
+        display: inline-block;
+        margin-top: 16px;
+        padding: 12px 18px;
+        border-radius: 14px;
+        background: linear-gradient(135deg, var(--accent), var(--accent-2));
+        color: #05121e;
+        text-decoration: none;
+        font-weight: 700;
+      }
+      .note {
+        margin-top: 18px;
+        color: var(--accent-2);
+      }
+    </style>
+  </head>
+  <body>
+    <div class="shell">
+      <div class="hero">
+        <p class="eyebrow">Sistema Escolar</p>
+        <h1>Preview de cadastro de alunos e boletim</h1>
+        <p>Este arquivo era do projeto antigo. Ele agora apresenta o novo sistema escolar com login de professores, cadastro de alunos, lançamento de notas, cálculo de média e geração de boletim.</p>
+        <a class="link" href="client/index.html">Abrir aplicação do cliente</a>
+        <p class="note">Para executar o sistema completo, rode <code>npm run dev:client</code> e <code>npm run dev:server</code>.</p>
+      </div>
+
+      <div class="panel">
+        <h2>Funcionalidades</h2>
+        <ul>
+          <li>Login de professor</li>
+          <li>Cadastro de alunos</li>
+          <li>Lançamento e soma das notas</li>
+          <li>Visualização de boletim</li>
+          <li>Dashboard com métricas de turma</li>
+        </ul>
+      </div>
+    </div>
+  </body>
+</html>
