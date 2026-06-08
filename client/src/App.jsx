@@ -68,6 +68,7 @@ const BULLETIN_PROFILES = {
     subjects: [
       { label: 'Língua Portuguesa', aliases: ['Português'] },
       { label: 'Literatura' },
+      { label: 'Redação', aliases: ['Producao Textual', 'Produção Textual', 'Redacao'] },
       { label: 'Língua Inglesa', aliases: ['Inglês', 'Língua Estrangeira Inglês'] },
       { label: 'Língua Espanhola', aliases: ['Espanhol', 'Língua Estrangeira Espanhol'] },
       { label: 'Arte', aliases: ['Artes', 'Educação Artística', 'Ed. Artística/Artes'] },
@@ -80,7 +81,6 @@ const BULLETIN_PROFILES = {
       { label: 'Geografia' },
       { label: 'Filosofia' },
       { label: 'Sociologia' },
-      { label: 'Projeto de Vida' },
     ],
   },
 };
