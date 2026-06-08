@@ -42,6 +42,53 @@ const SCHOOL_EMAIL = 'emrachidesaker@educacao.niteroi.rj.gov.br';
 const SCHOOL_PHONE = '21-99958-3923 / 99757-9268';
 const SCHOOL_DECREE = 'Decreto de Criação 2790/77 de 07/01/1977';
 const STANDARD_TERMS = [1, 2, 3, 4];
+const BULLETIN_PROFILES = {
+  fundamental: {
+    label: 'Ensino Fundamental',
+    shortLabel: 'Fundamental',
+    subtitle: '1º ao 9º ano',
+    terms: STANDARD_TERMS,
+    subjects: [
+      { label: 'Língua Portuguesa', aliases: ['Português'] },
+      { label: 'Língua Estrangeira Inglês', aliases: ['Inglês', 'Língua Inglesa'] },
+      { label: 'Ed. Artística/Artes', aliases: ['Arte', 'Artes', 'Educação Artística'] },
+      { label: 'Educação Física', aliases: ['Ed. Física', 'Educacao Física', 'Educacao Fisica'] },
+      { label: 'Matemática', aliases: ['Matematica'] },
+      { label: 'Ciências', aliases: ['Ciencias'] },
+      { label: 'História', aliases: ['Historia'] },
+      { label: 'Geografia' },
+      { label: 'Língua Estrangeira Espanhol', aliases: ['Espanhol', 'Língua Espanhola'] },
+    ],
+  },
+  medio: {
+    label: 'Ensino Médio',
+    shortLabel: 'Médio',
+    subtitle: '1ª a 3ª série',
+    terms: STANDARD_TERMS,
+    subjects: [
+      { label: 'Língua Portuguesa', aliases: ['Português'] },
+      { label: 'Literatura' },
+      { label: 'Língua Inglesa', aliases: ['Inglês', 'Língua Estrangeira Inglês'] },
+      { label: 'Língua Espanhola', aliases: ['Espanhol', 'Língua Estrangeira Espanhol'] },
+      { label: 'Arte', aliases: ['Artes', 'Educação Artística', 'Ed. Artística/Artes'] },
+      { label: 'Educação Física', aliases: ['Ed. Física', 'Educacao Física', 'Educacao Fisica'] },
+      { label: 'Matemática', aliases: ['Matematica'] },
+      { label: 'Física', aliases: ['Fisica'] },
+      { label: 'Química', aliases: ['Quimica'] },
+      { label: 'Biologia' },
+      { label: 'História', aliases: ['Historia'] },
+      { label: 'Geografia' },
+      { label: 'Filosofia' },
+      { label: 'Sociologia' },
+      { label: 'Projeto de Vida' },
+    ],
+  },
+};
+const BULLETIN_TYPE_OPTIONS = Object.entries(BULLETIN_PROFILES).map(([value, profile]) => ({
+  value,
+  label: profile.shortLabel,
+  description: profile.subtitle,
+}));
 
 const currencyLike = new Intl.NumberFormat('pt-BR', {
   minimumFractionDigits: 2,
@@ -55,6 +102,33 @@ function parseTermOrder(term) {
 
 function formatTermHeader(termNumber) {
   return `${termNumber}º bimestre`;
+}
+
+function normalizeText(value) {
+  return String(value || '')
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '')
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, ' ')
+    .trim();
+}
+
+function subjectMatches(subjectName, subjectDefinition) {
+  const normalizedSubject = normalizeText(subjectName);
+  if (!normalizedSubject) {
+    return false;
+  }
+
+  const candidates = [subjectDefinition.label, ...(subjectDefinition.aliases || [])];
+
+  return candidates.some((candidate) => {
+    const normalizedCandidate = normalizeText(candidate);
+    return (
+      normalizedSubject === normalizedCandidate ||
+      normalizedSubject.includes(normalizedCandidate) ||
+      normalizedCandidate.includes(normalizedSubject)
+    );
+  });
 }
 
 function normalizeScore(value, maxScore) {
@@ -154,6 +228,7 @@ function App() {
   const [selectedStudentId, setSelectedStudentId] = useState('');
   const [selectedStudent, setSelectedStudent] = useState(null);
   const [bulletin, setBulletin] = useState(null);
+  const [bulletinType, setBulletinType] = useState('fundamental');
   const [studentForm, setStudentForm] = useState(initialStudentForm);
   const [gradeForm, setGradeForm] = useState(initialGradeForm);
   const [search, setSearch] = useState('');
@@ -205,29 +280,47 @@ function App() {
     });
   }, [bulletin]);
 
+  const bulletinProfile = BULLETIN_PROFILES[bulletinType] || BULLETIN_PROFILES.fundamental;
+  const bulletinTerms = bulletinProfile.terms || STANDARD_TERMS;
+
   const bulletinSubjectRows = useMemo(() => {
-    const subjectMap = new Map();
+    const rowsBySubject = new Map();
+
+    bulletinProfile.subjects.forEach((subjectDefinition) => {
+      rowsBySubject.set(subjectDefinition.label, {
+        subject: subjectDefinition.label,
+        termCells: new Map(),
+        scores: [],
+      });
+    });
+
+    const unmatchedRows = new Map();
 
     bulletinTermEntries.forEach(([term, records]) => {
       const termOrder = parseTermOrder(term);
 
       records.forEach((record) => {
-        const subject = record.subject || 'Sem disciplina';
-        if (!subjectMap.has(subject)) {
-          subjectMap.set(subject, {
-            subject,
+        const subjectName = record.subject || 'Sem disciplina';
+        const matchedSubject = bulletinProfile.subjects.find((subjectDefinition) =>
+          subjectMatches(subjectName, subjectDefinition),
+        );
+        const rowKey = matchedSubject?.label || subjectName;
+        const targetRows = matchedSubject ? rowsBySubject : unmatchedRows;
+
+        if (!targetRows.has(rowKey)) {
+          targetRows.set(rowKey, {
+            subject: rowKey,
             termCells: new Map(),
             scores: [],
           });
         }
 
-        const row = subjectMap.get(subject);
+        const row = targetRows.get(rowKey);
         if (!row.termCells.has(termOrder)) {
           row.termCells.set(termOrder, []);
         }
 
-        const cellRecords = row.termCells.get(termOrder);
-        cellRecords.push(record);
+        row.termCells.get(termOrder).push(record);
 
         const normalizedScore = normalizeScore(record.score, record.maxScore);
         if (normalizedScore !== null) {
@@ -236,8 +329,11 @@ function App() {
       });
     });
 
-    return Array.from(subjectMap.values()).sort((a, b) => a.subject.localeCompare(b.subject, 'pt-BR'));
-  }, [bulletinTermEntries]);
+    return [
+      ...Array.from(rowsBySubject.values()),
+      ...Array.from(unmatchedRows.values()).sort((a, b) => a.subject.localeCompare(b.subject, 'pt-BR')),
+    ];
+  }, [bulletinProfile.subjects, bulletinTermEntries]);
 
   const bulletinYear = useMemo(() => {
     const date = new Date(bulletin?.generatedAt || Date.now());
@@ -247,7 +343,7 @@ function App() {
   const bulletinAverage = bulletin?.averageScore ?? selectedStudent?.averageScore ?? 0;
   const bulletinStatus = getBulletinStatus(Number(bulletinAverage) || null);
   const totalRecords = selectedStudent?.records?.length || 0;
-  const totalSubjects = bulletinSubjectRows.length;
+  const totalSubjects = bulletinSubjectRows.filter((row) => row.scores.length).length;
   const responsibleName = selectedStudent?.familyNames?.[0] || 'Não informado';
   const issueDate = formatPrintDateTime(bulletin?.generatedAt || Date.now());
 
@@ -731,6 +827,28 @@ function App() {
               </div>
             </div>
 
+            <div className="bulletin-toolbar">
+              <div className="bulletin-toolbar-copy">
+                <span>Tipo de boletim</span>
+                <p>Escolha a etapa para ajustar a grade de disciplinas e o modelo do histórico.</p>
+              </div>
+
+              <div className="bulletin-type-switch" role="tablist" aria-label="Tipo de boletim">
+                {BULLETIN_TYPE_OPTIONS.map((option) => (
+                  <button
+                    key={option.value}
+                    type="button"
+                    className={`bulletin-type-button ${bulletinType === option.value ? 'active' : ''}`}
+                    onClick={() => setBulletinType(option.value)}
+                    aria-pressed={bulletinType === option.value}
+                  >
+                    <strong>{option.label}</strong>
+                    <span>{option.description}</span>
+                  </button>
+                ))}
+              </div>
+            </div>
+
             <div className="bulletin-sheet" id="print-sheet">
               {selectedStudent && bulletin ? (
                 <>
@@ -774,6 +892,9 @@ function App() {
                   </section>
 
                   <h3 className="bulletin-doc-title">HISTÓRICO ESCOLAR</h3>
+                  <p className="bulletin-doc-subtitle">
+                    {bulletinProfile.label} • {bulletinProfile.subtitle}
+                  </p>
 
                   <div className="bulletin-student-card bulletin-student-card--compact">
                     <div className="bulletin-info-item">
@@ -805,7 +926,7 @@ function App() {
                   <div className="bulletin-table-card">
                     <div className="bulletin-table-head bulletin-table-head--formal">
                       <span>Disciplinas</span>
-                      {STANDARD_TERMS.map((termNumber) => (
+                      {bulletinTerms.map((termNumber) => (
                         <span key={termNumber}>{formatTermHeader(termNumber)}</span>
                       ))}
                       <span>Média final</span>
@@ -824,7 +945,7 @@ function App() {
                                 <strong>{row.subject}</strong>
                               </div>
 
-                              {STANDARD_TERMS.map((termNumber) => {
+                              {bulletinTerms.map((termNumber) => {
                                 const cellRecords = row.termCells.get(termNumber) || [];
                                 const cellScores = cellRecords
                                   .map((record) => normalizeScore(record.score, record.maxScore))
