@@ -34,8 +34,11 @@ npm install
 
 2. Inicie o backend:
 
+Antes de iniciar, crie o arquivo `server/.env` a partir de `server/.env.example` e defina login, senha e token:
+
 ```bash
 cd server
+cp .env.example .env   # edite com seus valores
 npm run dev
 ```
 

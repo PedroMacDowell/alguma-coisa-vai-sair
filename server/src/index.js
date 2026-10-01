@@ -17,9 +17,14 @@ const {
 } = require('./store');
 
 const PORT = process.env.PORT || 3001;
-const TEACHER_USERNAME = process.env.TEACHER_USERNAME || 'professor';
-const TEACHER_PASSWORD = process.env.TEACHER_PASSWORD || '123456';
-const TEACHER_TOKEN = process.env.TEACHER_TOKEN || 'professor-token';
+const TEACHER_USERNAME = process.env.TEACHER_USERNAME;
+const TEACHER_PASSWORD = process.env.TEACHER_PASSWORD;
+const TEACHER_TOKEN = process.env.TEACHER_TOKEN;
+
+if (!TEACHER_USERNAME || !TEACHER_PASSWORD || !TEACHER_TOKEN) {
+  console.error('Defina TEACHER_USERNAME, TEACHER_PASSWORD e TEACHER_TOKEN nas variaveis de ambiente (veja .env.example).');
+  process.exit(1);
+}
 
 const app = express();
 
